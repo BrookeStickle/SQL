@@ -1,3 +1,5 @@
+-- For this project I explored a Spotify dataset using SQL.
+
 CREATE TABLE BIT_DB.Spotifydata (
 id integer PRIMARY KEY,
 artist_name varchar NOT NULL,
