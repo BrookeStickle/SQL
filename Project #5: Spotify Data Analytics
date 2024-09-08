@@ -18,7 +18,7 @@ tempo decimal(6,3) NOT NULL,
 duration_ms integer NOT NULL,
 time_signature integer NOT NULL );
 
-SELECT * FROM BIT_DB.Spotifydata;
+SELECT * FROM Spotifydata;
 
 -- Who has the most popular song?
 -- Both Olivia Rodrigo and Ed Sheeran have a song with the highest popularity rating.
@@ -39,10 +39,36 @@ FROM BIT_DB.Spotifydata
 WHERE artist_name='Olivia Rodrigo'
 ORDER BY popularity desc;
 
-SELECT track_name, level_of_popularity, danceability,
+
+-- Does having a higher danceability rating indicate how popular a song is? 
+-- There is only one Very Popular song with a danceability rating higher than .8.
+SELECT track_name, danceability,
 CASE WHEN popularity >=90 THEN 'Very Popular'
 WHEN popularity >=80 THEN 'Popular'
 ELSE 'Not Popular'
-END AS "level_of_popularity" 
+END AS level_of_popularity
 FROM BIT_DB.Spotifydata
-HAVING danceability>=.7;
+WHERE danceability>=.8
+GROUP BY track_name
+ORDER BY danceability desc;
+
+-- Stats of the Very Popular songs.
+SELECT track_name, energy, loudness, tempo,
+CASE WHEN popularity >=90 THEN 'Very Popular'
+WHEN popularity >=80 THEN 'Popular'
+ELSE 'Not Popular'
+END AS level_of_popularity
+FROM BIT_DB.Spotifydata
+WHERE level_of_popularity = 'Very Popular'
+GROUP BY track_name;
+
+-- The average tempo of Very Popular songs is faster than Popular and Not Popular songs. 
+-- Energy, loudness, danceability, and song_key do not seem to be predictors of whether a song will be popular or not. 
+SELECT CASE WHEN popularity >=90 THEN 'Very Popular'
+WHEN popularity >=80 THEN 'Popular'
+ELSE 'Not Popular'
+END AS level_of_popularity, 
+AVG(energy), AVG(loudness), AVG(tempo), AVG(danceability), AVG(song_key)
+FROM BIT_DB.Spotifydata
+GROUP BY level_of_popularity
+ORDER BY popularity desc;
