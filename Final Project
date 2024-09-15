@@ -18,6 +18,23 @@ GROUP BY tracks.Name
 ORDER By number_of_playlists desc
 LIMIT 1;
 
+-- Popularity of Rock Music in different countries. 
+SELECT genres.Name, COUNT(genres.Name) as genre_count, customers.Country,
+CASE WHEN COUNT(genres.Name) >=100 THEN 'Loves Rock'
+WHEN COUNT(genres.Name) >=25 THEN 'Likes Rock'
+WHEN COUNT(genres.Name) >=15 THEN 'Dabbles in Rock'
+ELSE 'Needs Promoting Ideas'
+END AS Rock_Music_Popularity
+FROM genres 
+Join tracks on genres.GenreId=tracks.GenreId
+JOIN invoice_items as items on tracks.TrackId=items.TrackId
+JOIN invoices on items.InvoiceId=invoices.InvoiceId
+JOIN customers on invoices.CustomerId=customers.CustomerId 
+WHERE genres.Name='Rock'
+GROUP BY genres.Name, customers.Country
+ORDER BY genre_count desc;
+
+
 -- Show Customers (their full names, customer ID, and country) who are not in the US.
 SELECT FirstName, LastName, Customerid, Country
 FROM customers
