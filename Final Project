@@ -36,7 +36,7 @@ FROM employees
 WHERE Title = 'Sales Support Agent';
 
 -- Find a unique/distinct list of billing countries from the Invoice table.
-SELECT DISTINCT BillingCountry FROM invoices;
+SELECT DISTINCT BillingCountry FROM chinook.invoices;
 
 -- Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
 SELECT employees.EmployeeId, employees.FirstName, employees.LastName, invoices.InvoiceId 
@@ -52,21 +52,32 @@ JOIN employees on customers.SupportRepId=employees.EmployeeId;
 
 -- How many Invoices were there in 2009?
 SELECT COUNT(*)
-FROM invoices
-WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
-
+FROM chinook.invoices
+WHERE InvoiceDate like '2009%';
 
 -- What are the total sales for 2009?
-
+SELECT SUM(Total)
+FROM chinook.invoices
+WHERE InvoiceDate like '2009%';
 
 -- Write a query that includes the purchased track name with each invoice line ID.
-
+SELECT tracks.Name, invoice_items.Invoiceid
+FROM chinook.tracks
+JOIN chinook.invoice_items on tracks.Trackid=invoice_items.Trackid;
 
 -- Write a query that includes the purchased track name AND artist name with each invoice line ID.
-
+SELECT artists.Name as artist_name, tracks.Name as track_name, invoice_items.Invoiceid 
+FROM chinook.tracks
+JOIN chinook.invoice_items on tracks.Trackid=invoice_items.Trackid
+JOIN chinook.albums on tracks.Albumid=albums.Albumid
+JOIN chinook.artists on albums.Artistid=artists.Artistid;
 
 -- Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
-
+SELECT tracks.Name as track, albums.Name as album_name, genres.Name as genre, media_types.Name as media_type, genres.Name as genre
+FROM chinook.tracks
+JOIN chinook.genres on tracks.Genreid = genres.Genreid
+JOIN chinook.media_types on tracks.MediaTypeid=meida_types.MediaTypeid
+JOIN chinook.albums on tracks.Albumid=albums.Albumid;
 
 -- Show the total sales made by each sales agent.
 
