@@ -1,18 +1,22 @@
 -- Which genre is the most popular in the Czech Repbulic? 
-SELECT genres.Name, COUNT(genres.Name), customers.Country
+SELECT genres.Name, COUNT(genres.Name) as genre_count, customers.Country
 FROM genres 
 Join tracks on genres.GenreId=tracks.GenreId
 JOIN invoice_items as items on tracks.TrackId=items.TrackId
 JOIN invoices on items.InvoiceId=invoices.InvoiceId
 JOIN customers on invoices.CustomerId=customers.CustomerId 
 WHERE customers.Country='Czech Republic'
-GROUP BY genres.Name, customers.Country;
+GROUP BY genres.Name, customers.Country
+ORDER BY genre_count desc
+LIMIT 1;
 
 -- What song shows up on the most playlists?
-Select tracks.Name, COUNT(pt.Playlistid) 
+Select tracks.Name, COUNT(pt.Playlistid) as number_of_playlists 
 FROM tracks
 JOIN playlist_track as pt on tracks.TrackId=pt.Trackid
-GROUP BY tracks.Name;
+GROUP BY tracks.Name
+ORDER By number_of_playlists desc
+LIMIT 1;
 
 -- Show Customers (their full names, customer ID, and country) who are not in the US.
 SELECT FirstName, LastName, Customerid, Country
