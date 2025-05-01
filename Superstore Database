@@ -33,7 +33,7 @@ SELECT *
 FROM superstore
 LIMIT 5;
 
--- 1. Order items by price
+-- Order items by price
 SELECT item_name, price
 FROM superstore
 ORDER BY price;
@@ -41,6 +41,12 @@ ORDER BY price;
 -- Average prices of superstore products
 SELECT AVG(price) 
 FROM superstore;
+
+-- Average rating of superstore products, grouped by category
+Select category, AVG(average_rating)
+From superstore
+Group by category
+Order by AVG(average_rating) desc;
 ​
 -- Most expensive price of a Kitchen Supplies item
 SELECT category, MAX(price)
@@ -51,3 +57,11 @@ WHERE category="Kitchen Supplies";
 SELECT average_rating, item_name
 FROM superstore
 ORDER BY average_rating desc;
+
+-- How many electroncics are in stock?
+Select item_name, stock_quantity 
+From superstore
+Where category="Electronics" 
+Order by stock_quantity desc;
+
+
